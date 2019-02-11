@@ -4,7 +4,7 @@ node_js:
 - node
 
 before_install:
-  - echo "Before Install"
+  - chmod +x deploy.sh
 
 script:
   - echo "Script"
@@ -13,5 +13,8 @@ before_deploy:
   - echo "BEfore deploy"
 
 deploy:
-  - chmod +x deploy.sh
-  - "./deploy.sh"
+  skip_cleanup: true
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
