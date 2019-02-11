@@ -9,10 +9,10 @@ PRODUCTION_BRANCH="production"
 #   - the S3 bucket to sync assets with
 #   - the CloudFront distribution for which to create an invalidation
 NODE_ENV=''
-CLOUDFRONT_DIST_ID=''
+#CLOUDFRONT_DIST_ID=''
 if [[ $TRAVIS_BRANCH == $STAGING_BRANCH ]]; then
   NODE_ENV="staging"
-  CLOUDFRONT_DIST_ID=$CLOUDFRONT_DIST_ID_STAGING
+  #CLOUDFRONT_DIST_ID=$CLOUDFRONT_DIST_ID_STAGING
   # TODO: Change this to the command that builds your app for staging
   yarn build:staging
 elif [[ $TRAVIS_BRANCH == $PRODUCTION_BRANCH ]]; then
@@ -28,7 +28,8 @@ fi
 
 # Build the name of the S3 bucket we want to deploy to
 # TODO: Change the prefix of the bucket name to match your bucket's name
-S3_BUCKET="my-crypto-react-$NODE_ENV"
+#S3_BUCKET="my-crypto-react-$NODE_ENV"
+S3_BUCKET="my-crypto-react"
 echo "Deploying to the $S3_BUCKET bucket"
 
 # Install the AWS CLI so we can publish to S3
@@ -43,6 +44,4 @@ aws s3 sync public/ "s3://$S3_BUCKET" --acl public-read --delete
 
 # Force-invalidate the now-outdated assets rather than waiting for them to expire
 # Make sure you have the CLOUDFRONT_DIST_ID_* env variables defined for this to work
-aws cloudfront create-invalidation \
-  --distribution-id $CLOUDFRONT_DIST_ID \
-  --paths /*
+# aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST_ID --paths /*
