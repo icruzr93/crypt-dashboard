@@ -2,5 +2,16 @@ sudo: required
 language: node_js
 node_js:
 - node
-after_success:
-- chmod +x deploy.sh
+
+before_install:
+  - echo "Before Install"
+
+script:
+  - echo "Script"
+
+before_deploy:
+  - echo "BEfore deploy"
+
+deploy:
+  - chmod +x deploy.sh
+  - "./deploy.sh"
