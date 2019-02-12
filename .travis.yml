@@ -1,17 +1,23 @@
+#Request root permissions to the TravisCI runtime environment
 sudo: required
-language: node_js
-node_js:
-- node
 
+#Tell TravisCI that we're using docker to run our tests
+services:
+    - docker
+
+#Build our test Docker container
 before_install:
-  - chmod +x deploy.sh
+  - docker build -t my-crypto-react-test -f Dockerfile.test .
 
+#Run our test Docker container
 script:
-  - echo "Script"
+  - docker run my-crypto-react-test
 
+#Build our deployment container
 before_deploy:
-  - echo "BEfore deploy"
+  - docker build -t my-crypto-react-prod -f Dockerfile.deploy .
 
+#Run our deployment container via shell script if commiting to the master branch
 deploy:
   skip_cleanup: true
   provider: script
